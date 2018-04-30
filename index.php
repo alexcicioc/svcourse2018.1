@@ -8,6 +8,8 @@ use Course\Services\Http\HttpConstants;
 use Course\Services\Http\Response;
 use Course\Services\Http\Exceptions\HttpException;
 
+$user = \Course\Api\Model\UserModel::loadById(1);
+
 try {
     if (empty($_GET['path'])) {
         throw new HttpException('Bad Request', HttpConstants::STATUS_CODE_BAD_REQUEST);

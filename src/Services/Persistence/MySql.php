@@ -176,6 +176,7 @@ class MySql
         $columnValueString = '';
         $where = '';
 
+        // UPDATE tableName SET coloana1 = valoare1, col2=val2 WHERE id = <something>
         // Generate the where clause
         foreach ($primaryKeys as $columnName) {
             $escapedValue = self::getConnection()->escape_string($data[$columnName]);
@@ -195,7 +196,7 @@ class MySql
         $columnValueString = rtrim($columnValueString, ', ');
 
         // Generate the query and execute it
-        self::query("UPDATE `$tableName` SET $columnValueString  WHERE $where");
+        self::query("UPDATE `$tableName` SET $columnValueString WHERE $where");
 
         // Return the number of rows that were updated
         return self::getConnection()->affected_rows;

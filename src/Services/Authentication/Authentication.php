@@ -71,7 +71,7 @@ class Authentication
         $data = unserialize(self::openSSLDecrypt(base64_decode($token)));
 
         if (false === $data) {
-            throw new DecryptException('Invalid token');
+            throw new DecryptException('Invalid authentication token');
         }
 
         return $data;
