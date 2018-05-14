@@ -2,10 +2,7 @@
 namespace Course\Api\Model;
 
 use Amp\Socket\ServerSocket;
-use Course\Api\Exceptions\Precondition;
-use Course\Services\Authentication\Authentication;
 use Course\Services\Socket\Broadcast;
-use Course\Services\Socket\Response;
 use Course\Services\Socket\SocketClient;
 use Course\Services\Socket\SocketClients;
 
@@ -24,23 +21,23 @@ class JoinRoomEvent extends Event {
 
     /**
      * @param ServerSocket $serverSocket
-     * @return Broadcast
+     * @return void
      * @throws \Course\Services\Persistence\Exceptions\ConnectionException
      * @throws \Course\Services\Persistence\Exceptions\NoResultsException
      * @throws \Course\Services\Persistence\Exceptions\QueryException
      */
     public function handle(ServerSocket $serverSocket) {
         $userId = $this->getUserModel()->id;
-        $roomModel = RoomModel::create($userId);
+        $roomUserModel = RoomUsersModel::getOrCreateRoomUser($userId);
         Room::addUser($userId);
 
         $socketClient = new SocketClient($serverSocket, $userId);
 
-        SocketClients::addClientToRoom($roomModel->id, $socketClient);
+        SocketClients::addClientToRoom($roomUserModel->roomId, $socketClient);
 
         if (Room::areThereAreEnoughUsers()) {
             $body = ['ok'=> true];
-            $broadcast = new Broadcast($roomModel->id, ResponseEvents::START_GAME, $body);
+            $broadcast = new Broadcast($roomUserModel->roomId, ResponseEvents::START_GAME, $body);
             SocketClients::broadcastToRoom($broadcast);
         }
     }

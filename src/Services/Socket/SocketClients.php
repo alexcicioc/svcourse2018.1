@@ -8,8 +8,6 @@
 
 namespace Course\Services\Socket;
 
-use Amp\Socket\ServerSocket;
-
 class SocketClients
 {
     private static $clients = [];
@@ -26,8 +24,7 @@ class SocketClients
 
     public static function broadcastToRoom(Broadcast $message)
     {
-        var_dump(self::$clients);
-        foreach (self::$clients[$message->getRoomId()] as $client) {
+        foreach (self::$clients[$message->getRoomId()] as $userId => $client) {
             // We don't yield the promise returned from $client->write() here as we don't care about
             // other clients disconnecting and thus the write failing.
             $client->write($message);

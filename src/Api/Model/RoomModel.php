@@ -1,7 +1,10 @@
 <?php
+
 namespace Course\Api\Model;
+
 use Course\Services\Persistence\Exceptions\NoResultsException;
 use Course\Services\Persistence\MySql;
+
 /**
  * Class UserModel
  * Active Record for the users table
@@ -14,10 +17,11 @@ class RoomModel extends ActiveRecord
      * Contains the database configuration used in the ActiveRecord parent
      */
     private static $config = [
-        ActiveRecord::CONFIG_TABLE_NAME => 'rooms',
+        ActiveRecord::CONFIG_TABLE_NAME   => 'rooms',
         ActiveRecord::CONFIG_PRIMARY_KEYS => ['id'],
-        ActiveRecord::CONFIG_DB_COLUMNS => ['id', 'name'],
+        ActiveRecord::CONFIG_DB_COLUMNS   => ['id', 'name'],
     ];
+
     /**
      * Fetches the user by it's id and returns an UserModel
      *
@@ -32,11 +36,15 @@ class RoomModel extends ActiveRecord
         $result = MySql::getOne(self::getTableName(), ['id' => $id]);
         return new self($result);
     }
+
     /**
      * Inserts a new record into the users table and returns the newly created user as a UserModel
      *
      * @param string $name
      * @return RoomModel
+     * @throws NoResultsException
+     * @throws \Course\Services\Persistence\Exceptions\ConnectionException
+     * @throws \Course\Services\Persistence\Exceptions\QueryException
      * @internal param int $userId
      */
     public static function create(string $name): self
@@ -44,6 +52,13 @@ class RoomModel extends ActiveRecord
         $id = MySql::insert(self::getTableName(), ['name' => $name]);
         return self::loadById($id);
     }
+
+    /**
+     * @param string $name
+     * @return bool
+     * @throws \Course\Services\Persistence\Exceptions\ConnectionException
+     * @throws \Course\Services\Persistence\Exceptions\QueryException
+     */
     public static function roomExists(string $name): bool
     {
         try {
@@ -53,11 +68,20 @@ class RoomModel extends ActiveRecord
             return false;
         }
     }
+
+    /**
+     * @param string $name
+     * @return RoomModel
+     * @throws NoResultsException
+     * @throws \Course\Services\Persistence\Exceptions\ConnectionException
+     * @throws \Course\Services\Persistence\Exceptions\QueryException
+     */
     public static function getByRoomName(string $name): self
     {
         $result = MySql::getOne(self::getTableName(), ['name' => $name]);
         return new self($result);
     }
+
     /**
      * Used in the ActiveRecord parent to fetch the db config
      *
