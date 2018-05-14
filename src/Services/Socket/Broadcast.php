@@ -9,7 +9,7 @@
 namespace Course\Services\Socket;
 
 
-class Response extends Message
+class Broadcast extends Message
 {
 
 }

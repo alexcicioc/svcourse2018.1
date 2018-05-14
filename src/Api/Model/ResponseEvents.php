@@ -29,7 +29,6 @@ class ResponseEvents {
         $decodedBody = @json_decode($jsonBody);
         Precondition::isNotEmpty($decodedBody, 'decodedBody');
         $eventClassName = __NAMESPACE__ . "\\" .ucfirst($eventType) . "Event";
-        var_dump($decodedBody);
         return new $eventClassName($eventType, $decodedBody);
     }
 }
