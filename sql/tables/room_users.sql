@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2018 at 08:59 AM
+-- Generation Time: May 14, 2018 at 08:58 AM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -17,12 +17,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rooms`
+-- Table structure for table `room_users`
 --
 
-CREATE TABLE `rooms` (
+CREATE TABLE `room_users` (
   `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(32) NOT NULL
+  `roomId` int(10) UNSIGNED NOT NULL,
+  `userId` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -30,17 +31,18 @@ CREATE TABLE `rooms` (
 --
 
 --
--- Indexes for table `rooms`
+-- Indexes for table `room_users`
 --
-ALTER TABLE `rooms`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `room_users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `roomId` (`roomId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `rooms`
+-- AUTO_INCREMENT for table `room_users`
 --
-ALTER TABLE `rooms`
+ALTER TABLE `room_users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
