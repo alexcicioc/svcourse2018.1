@@ -29,16 +29,18 @@ class JoinRoomEvent extends Event {
     public function handle(ServerSocket $serverSocket) {
         $userId = $this->getUserModel()->id;
         $roomUserModel = RoomUsersModel::getOrCreateRoomUser($userId);
-        Room::addUser($userId);
+        Queue::addUser($userId);
 
         $socketClient = new SocketClient($serverSocket, $userId);
 
         SocketClients::addClientToRoom($roomUserModel->roomId, $socketClient);
 
-        if (Room::areThereAreEnoughUsers()) {
+        if (Queue::areThereAreEnoughUsers()) {
             $body = ['ok'=> true];
             $broadcast = new Broadcast($roomUserModel->roomId, ResponseEvents::START_GAME, $body);
             SocketClients::broadcastToRoom($broadcast);
+            RoomUsersModel::removeRoomFromQue($roomUserModel->roomId);
+            Queue::reset();
         }
     }
 }

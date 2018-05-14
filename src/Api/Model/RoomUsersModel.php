@@ -103,6 +103,10 @@ class RoomUsersModel extends ActiveRecord
         return $roomUserModel;
     }
 
+    public static function removeRoomFromQue($roomId) {
+        unset(self::$roomsInQue[$roomId]);
+    }
+
     /**
      * Used in the ActiveRecord parent to fetch the db config
      *

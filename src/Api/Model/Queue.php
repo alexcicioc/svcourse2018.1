@@ -2,7 +2,7 @@
 
 namespace Course\Api\Model;
 
-class Room {
+class Queue {
 
     public static $users = [];
 
@@ -12,5 +12,9 @@ class Room {
 
     public static function areThereAreEnoughUsers() {
         return count(self::$users) >= 2;
+    }
+
+    public static function reset() {
+        self::$users = [];
     }
 }
